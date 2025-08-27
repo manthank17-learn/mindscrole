@@ -1,6 +1,6 @@
-# MindScroll V1.1 - Instagram Reel Transcript MVP
+# MindScrole V1.1 - Instagram Reel Transcript MVP
 
-MindScroll is an AI-powered tool designed to extract and display transcripts from Instagram Reels.  
+MindScrole is an AI-powered tool designed to extract and display transcripts from Instagram Reels.  
 This MVP allows users to submit a Reel URL and receive a **full transcript** of the video directly on a web dashboard built with **Streamlit**.
 
 ---
