@@ -39,10 +39,12 @@ st.header("📝 Generate Transcript")
 
 # URL input
 reel_url = st.text_input(
-    "Instagram Reel URL:",
-    placeholder="https://www.instagram.com/reel/...",
-    help="Paste the Instagram Reel URL here"
+    "Video URL:",
+    placeholder="https://www.instagram.com/reel/... or YouTube/TikTok URL",
+    help="Paste Instagram Reel, YouTube, or TikTok URL here"
 )
+
+st.info("💡 **Tip:** If Instagram fails due to rate limits, try YouTube Shorts or TikTok URLs!")
 
 # Process button
 if st.button("🚀 Get Transcript", type="primary"):
@@ -65,6 +67,14 @@ if st.button("🚀 Get Transcript", type="primary"):
                 ydl_opts = {
                     "outtmpl": video_path,
                     "quiet": True,  # Suppress yt-dlp output
+                    "extractor_args": {
+                        "instagram": {
+                            "api_version": "v1"
+                        }
+                    },
+                    "http_headers": {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                    }
                 }
                 
                 with YoutubeDL(ydl_opts) as ydl:
@@ -142,11 +152,25 @@ if st.button("🚀 Get Transcript", type="primary"):
                 status_text.empty()
         
         except Exception as e:
-            st.error(f"❌ An error occurred: {str(e)}")
-            st.markdown("**Possible issues:**")
-            st.markdown("- Instagram Reel URL is invalid or private")
-            st.markdown("- Network connection issues")
-            st.markdown("- FFmpeg not properly installed")
+            error_msg = str(e).lower()
+            if "rate-limit" in error_msg or "login required" in error_msg:
+                st.error("🚫 **Instagram Rate Limit Reached**")
+                st.markdown("""
+                **Try these solutions:**
+                1. Wait a few minutes and try again
+                2. Try a different Instagram Reel URL
+                3. Use YouTube Shorts or TikTok instead
+                4. Make sure the Instagram account is public
+                """)
+            elif "private" in error_msg or "not available" in error_msg:
+                st.error("🔒 **Content Not Available**")
+                st.markdown("This content might be private or removed. Try a public Instagram Reel.")
+            else:
+                st.error(f"❌ An error occurred: {str(e)}")
+                st.markdown("**Possible issues:**")
+                st.markdown("- Video URL is invalid or private")
+                st.markdown("- Network connection issues")
+                st.markdown("- Platform restrictions")
             progress_bar.empty()
             status_text.empty()
 
