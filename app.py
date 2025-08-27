@@ -92,7 +92,6 @@ if st.button("🚀 Get Transcript", type="primary"):
                     audio_file, 
                     codec="pcm_s16le", 
                     ffmpeg_params=["-ac", "1"],
-                    verbose=False,  # Suppress moviepy output
                     logger=None
                 )
                 clip.close()
