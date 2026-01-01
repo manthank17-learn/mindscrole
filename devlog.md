@@ -1,3 +1,49 @@
+## 2025-12-27 — Phase 2.7 Decision (Instagram Automation Pivot)
+
+### Context
+Multiple experiments were conducted to evaluate automated ingestion of Instagram Reels via:
+- CLI tools
+- Private APIs (instagrapi)
+- Reverse-engineered approaches
+
+All private API–based methods were either blocked at the environment/IP level or deemed high-risk and non-viable for a product-facing MVP.
+
+### Key Finding
+Instagram actively restricts:
+- Programmatic login from server/Linux environments
+- Private API access
+- DM-based automation
+
+This makes backend-driven Instagram automation unreliable and unsafe.
+
+### Decision
+Mindscrole will **not** automate Instagram ingestion via:
+- DMs
+- Private APIs
+- Scraping
+- Background services
+
+Instead, ingestion will move to a **user-initiated browser extension model**.
+
+### New Ingestion Model (Approved)
+- User logs into Instagram normally (browser/app).
+- A developer-mode browser extension:
+  - reads the current page URL (e.g. `/reel/{id}`)
+  - performs no background scraping.
+- The reel URL is sent to the Mindscrole pipeline **only when the user explicitly triggers the action** (click / command).
+
+### Rationale
+- Zero ToS violation
+- No account risk
+- Deterministic behavior
+- Clear user intent
+- Scalable and future-proof
+
+### Status
+- Instagram private API approaches permanently abandoned.
+- Browser extension ingestion approved as the safe automation path.
+- Proceeding to extension design and schema integration.
+
 ## 2025-12-27 — Phase 2 Complete (Transcription Pipeline)
 
 ### Completed
