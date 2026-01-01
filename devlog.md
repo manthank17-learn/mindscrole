@@ -1,3 +1,76 @@
+## 2026-01-02 — Phase 3 Started (Mobile Share Ingestion)
+
+### Objective
+Design a safe, scalable, and user-native ingestion mechanism to capture Instagram Reel links without scraping, private APIs, or automation risks.
+
+### Key Decision
+Shifted from:
+- Instagram CLI
+- instagrapi / private API automation
+- browser scraping & extensions
+
+➡️ **To a mobile-first Android Share Sheet architecture**
+
+This aligns with real user behavior (Instagram is primarily mobile) and avoids all Instagram ToS and stability risks.
+
+---
+
+### Implementation
+- Created Android app: **MindscroleShare**
+- Registered intent filter for:
+  - `android.intent.action.SEND`
+  - MIME type: `text/plain`
+- App appears in Android system Share Sheet
+- Handles shared text via `Intent.EXTRA_TEXT`
+
+---
+
+### Validation
+✅ Successfully shared an Instagram Reel from the Instagram Android app  
+✅ MindscroleShare app opened via Share Sheet  
+✅ Reel URL captured and displayed correctly  
+
+Example captured URL: https://www.instagram.com/reel/DRZefGKX02/?utm_source=ig_web_button_native_share
+
+
+---
+
+### Why This Architecture Is Correct
+- No scraping
+- No private APIs
+- No automation detection
+- Fully user-initiated
+- OS-level permission model
+- Instagram cannot block or rate-limit this flow
+
+This becomes the **primary ingestion entry point** for Mindscrole.
+
+---
+
+### Current Status
+- Android emulator running locally for rapid iteration
+- Share Sheet ingestion loop proven end-to-end
+- Backend pipeline (Ubuntu + Whisper) already validated in Phase 2
+
+---
+
+### Next Steps (Phase 3 Continuation)
+1. Detect and validate Instagram Reel URLs in-app
+2. Add explicit UI feedback (“Reel detected ✅”)
+3. Add user-controlled action to forward URL to backend pipeline
+4. Connect Android app → Ubuntu service (local or remote)
+
+---
+
+### Strategic Note
+Mobile Share Sheet ingestion replaces all previous plans involving:
+- CLI-based Instagram access
+- instagrapi automation
+- Selenium / browser scraping
+
+This marks a **major architectural pivot** in favor of stability, safety, and real-world usability.
+
+
 ## 2025-12-27 — Phase 2.7 Decision (Instagram Automation Pivot)
 
 ### Context
